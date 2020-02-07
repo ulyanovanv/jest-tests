@@ -1,0 +1,78 @@
+body {
+    background-color: #F0F0F0;
+    font-family: 'Lora';
+}
+
+input[type="text"],
+select {
+    border: none;
+    outline: none;
+    width: 60px;
+}
+
+select {
+    font-family: Arial, serif;
+    color: #5e93e4;
+}
+
+.v-application {
+  font-family: Times, serif !important;
+}
+
+.header {
+    background-color: #5e93e4;
+    color: #ffffff;
+    padding: 20px;
+    margin: 0;
+    text-align: center;
+}
+
+.currency-converter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto;
+}
+
+.switcher {
+    margin: 20px 0;
+    height: 25px;
+    width: 25px;
+    background-color: #5e93e4;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 1px 3px 0 grey;
+}
+
+.switcher:hover {
+    background-color: #4478c9;
+}
+
+.switcher img {
+    height: 16px;
+    width: 16px;
+}
+
+.input-box {
+    background-color: #FFFFFF;
+    border: 1px solid #D3D3D3;
+    box-shadow: 0 1px 3px 0 #D3D3D3;
+    padding: 12px;
+    border-radius: 5px;
+}
+
+.input-box_symbol {
+    color: #c2c2c2;
+    font-weight: bold;
+}
+
+
+.rotate {
+    transform: rotate(90deg);
+}
+
+.error {
+    font-weight: bold;
+}
+

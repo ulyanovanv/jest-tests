@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`index should render content correctly 1`] = `
+<v-layout-stub
+  align="center"
+  column=""
+  justify="center"
+  tag="div"
+>
+  <v-flex-stub
+    md6=""
+    sm8=""
+    tag="div"
+    xs12=""
+  >
+    <div
+      class="text-center"
+    >
+      <h4>
+        Welcome to Currency Converter!
+      </h4>
+       
+      <nuxt-link-stub
+        prefetch="true"
+        to="/converter"
+      >
+        You can try out our app!
+      </nuxt-link-stub>
+    </div>
+  </v-flex-stub>
+</v-layout-stub>
+`;
