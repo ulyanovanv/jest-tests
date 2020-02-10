@@ -117,22 +117,57 @@ describe('rates actions', () => {
 
   it('switchCurrencies reassign the currencies and values instate and calculate the new value', () => {
     const commit = jest.fn()
-    // const commitSetValue = jest.fn()
 
     actions.switchCurrencies({ commit, getters })
 
-    // const firstCurrency = getters.getCurrency_1();
-    // const firstValue = getters.getValue_1();
-
     expect(commit).toHaveBeenCalledTimes(4)
-    // expect(commit).toHaveBeenCalledWith(
-    //   "SET_CHANGE_CURRENCY", { number: 1, value: getters.getCurrency_2() })
-    // expect(commit).toHaveBeenCalledWith(
-    //   "SET_CHANGE_CURRENCY", { number: 1, value: firstCurrency })
-    // expect(commit).toHaveBeenCalledWith(
-    //   "SET_CHANGE_VALUE", { number: 1, value: getters.getValue_2() })
-    // expect(commit).toHaveBeenCalledWith(
-    //   "SET_CHANGE_VALUE", { number: 2, value: firstValue })
+
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_CURRENCY", { number: 1, value: getters.getCurrency_2 })
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_CURRENCY", { number: 2, value: getters.getCurrency_1 })
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_VALUE", { number: 1, value: getters.getValue_2 })
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_VALUE", { number: 2, value: getters.getValue_1 })
+  })
+
+  it('changeOfValue return value_2=0 if value_1=0', () => {
+    const commit = jest.fn()
+
+    const payload = {
+      inputBox: 1,
+      value: 0
+    }
+
+    actions.changeOfValue({ commit, getters }, payload)
+
+    expect(commit).toHaveBeenCalledTimes(2)
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_VALUE", { number: 1, value: 0 })
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_VALUE", { number: 2, value: 0 })
+  })
+
+  it('changeOfValue calculates value_2 if value_1 is changed', () => {
+    const commit = jest.fn()
+    const $convertedCurrencyValue = jest.fn()
+
+    const payload = {
+      inputBox: '1',
+      value: 20
+    }
+
+    actions.changeOfValue({ commit, getters }, payload)
+
+    expect(commit).toHaveBeenCalledTimes(2)
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_VALUE", { number: 1, value: payload.value })
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_VALUE", {
+        number: 2,
+        value: $convertedCurrencyValue(getters.getRates, getters.getCurrency_1, getters.getCurrency_2, getters.getValue_1)
+      })
   })
 })
 

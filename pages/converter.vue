@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-flex class="text-center">
-      <section v-if="rates">
+      <section v-if="Object.entries(rates).length">
         <div class="currency-converter">
           <input-box inputbox="1"/>
           <switcher></switcher>

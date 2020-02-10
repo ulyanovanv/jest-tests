@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`converter, the UI Snapshot: should render content correctly 1`] = `
+<div
+  class="layout"
+>
+  <div
+    class="flex text-center"
+  >
+    <section>
+      <div
+        class="currency-converter"
+      >
+        <div
+          class="input-box"
+        >
+          <span
+            class="input-box_symbol"
+          >
+            €
+          </span>
+           
+          <input
+            id="valueNum"
+            type="text"
+          />
+           
+          <select>
+            <option>
+              EUR
+            </option>
+            <option>
+              USD
+            </option>
+            <option>
+              GBP
+            </option>
+          </select>
+        </div>
+         
+        <div
+          class="switcher"
+          id="switcher"
+        >
+          <img
+            class="rotate"
+            src="@/assets/images/switch.svg"
+          />
+        </div>
+         
+        <div
+          class="input-box"
+        >
+          <span
+            class="input-box_symbol"
+          >
+            $
+          </span>
+           
+          <input
+            id="valueNum"
+            type="text"
+          />
+           
+          <select>
+            <option>
+              EUR
+            </option>
+            <option>
+              USD
+            </option>
+            <option>
+              GBP
+            </option>
+          </select>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;
+
+exports[`converter, the error rendering Snapshot: should render content correctly 1`] = `
+<div
+  class="layout"
+>
+  <div
+    class="flex text-center"
+  >
+    <section>
+      <p
+        class="header error"
+      >
+        Unfortunately, no currency rates are available at the moment. Try again later.
+      </p>
+    </section>
+  </div>
+</div>
+`;

@@ -34,10 +34,18 @@ export const mutations = {
   },
 
   SET_CHANGE_VALUE: (state, payload) => {
+    if (payload.number !== 1 && payload.number !== 2) {
+      return new Error('Not allowed value')
+    }
+
     state[`value_${payload.number}`] = payload.value
   },
 
   SET_CHANGE_CURRENCY: (state, payload) => {
+    if (payload.number !== 1 && payload.number !== 2) {
+      return new Error('Not allowed value')
+    }
+
     state[`currency_${payload.number}`] = payload.value
   },
 }
@@ -77,11 +85,6 @@ export const actions = {
   changeOfValue({ commit, getters }, data) {
     const { inputBox, value } = data;
 
-    commit('SET_CHANGE_VALUE', {
-      number: inputBox,
-      value: value
-    })
-
     if (value === 0) {
       commit('SET_CHANGE_VALUE', { number: 1, value: 0 })
       commit('SET_CHANGE_VALUE', { number: 2, value: 0 })
@@ -91,7 +94,7 @@ export const actions = {
         number: 2,
         value: this.$convertedCurrencyValue(getters.getRates, getters.getCurrency_1, getters.getCurrency_2, getters.getValue_1)
       })
-    } else if (inputBox == 2) {
+    } else if (inputBox== 2) {
       commit('SET_CHANGE_VALUE', { number: 2, value: value })
       commit('SET_CHANGE_VALUE', {
         number: 1,
