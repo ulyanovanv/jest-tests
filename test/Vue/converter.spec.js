@@ -8,7 +8,7 @@ const localVue = createLocalVue()
 Vue.use(Vuex)
 Vue.use(Vuetify)
 
-describe('converter', () => {
+describe('converter, the UI', () => {
   let getters, store
 
   beforeEach(() => {
@@ -55,6 +55,39 @@ describe('converter', () => {
     expect(wrapper.contains('.currency-converter')).toBe(true)
   })
 
+
+})
+
+describe('converter, the error rendering', () => {
+  let getters, store
+
+  beforeEach(() => {
+    getters = {
+      'rates/getRates': () => {
+        return {}
+      },
+      'rates/getCurrency_1': () => 'EUR',
+      'rates/getCurrency_2': () => 'USD',
+
+      'rates/getValue_1': () => 1,
+      'rates/getValue_2': () => 1.11
+    }
+
+    store = new Vuex.Store({
+      getters
+    })
+  })
+
+  test('Snapshot: should render content correctly', () => {
+    const wrapper = mount(converter, {
+      store,
+      Vue
+    })
+
+    expect(getters['rates/getRates']()['EUR']).toBeUndefined()
+    expect(wrapper.vm.$el).toMatchSnapshot()
+  })
+
   test("Should return error text, if rates are empty object", () => {
     store = new Vuex.Store({
       getters: {
@@ -69,8 +102,6 @@ describe('converter', () => {
       store,
       Vue
     })
-
-    console.log(getters['rates/getRates']())
 
     expect(wrapper.contains('.error')).toBe(true)
   })
