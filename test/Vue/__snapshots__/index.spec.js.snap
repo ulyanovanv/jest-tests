@@ -21,6 +21,7 @@ exports[`index should render content correctly 1`] = `
       </h4>
        
       <nuxt-link-stub
+        id="toConverterPage"
         prefetch="true"
         to="/converter"
       >

@@ -1,9 +1,10 @@
 import { state, getters, mutations, actions } from '@/store/rates.js';
 import axios from 'axios';
 import Vue from 'vue';
-Vue.use(axios);
 import { roundValueTwoSigns, convertedCurrencyValue } from '@/plugins/utilities.js'
 import { mount, createLocalVue, shallowMount, get} from '@vue/test-utils'
+Vue.use(axios);
+Vue.prototype.convertedCurrencyValue = convertedCurrencyValue;
 
 jest.mock('axios');
 
@@ -157,26 +158,36 @@ describe('rates actions', () => {
   })
 
   // TODO: how to mock injected function
-  // it('changeOfValue calculates value_2 if value_1 is changed', () => {
-  //   const commit = jest.fn()
-  //   const mock = (currencyRates, currency1, currency2, value1) => convertedCurrencyValue(currencyRates, currency1, currency2, value1);
-  //
-  //   const payload = {
-  //     inputBox: '1',
-  //     value: 20
-  //   }
-  //
-  //   actions.changeOfValue({ commit, getters }, payload)
-  //
-  //   expect(commit).toHaveBeenCalledTimes(2)
-  //   expect(commit).toHaveBeenCalledWith(
-  //     "SET_CHANGE_VALUE", { number: 1, value: payload.value })
-  //   expect(commit).toHaveBeenCalledWith(
-  //     "SET_CHANGE_VALUE", {
-  //       number: 2,
-  //       value: mock(getters.getRates, getters.getCurrency_1, getters.getCurrency_2, getters.getValue_1)
-  //     })
-  // })
+  it('changeOfValue calculates value_2 if value_1 is changed', () => {
+    const commit = jest.fn()
+    const mock2 = jest.fn()
+    // const mock = (currencyRates, currency1, currency2, value1) => convertedCurrencyValue(currencyRates, currency1, currency2, value1);
+    // const mock = {
+    //   get: jest.fn((url) => {
+    //     if (url === '/something') {
+    //       return Promise.resolve({
+    //         data: 'data'
+    //       });
+    //     }
+    //   }),
+    // }
+
+    const payload = {
+      inputBox: '1',
+      value: 20
+    }
+
+    actions.changeOfValue({ commit, getters }, payload)
+
+    expect(commit).toHaveBeenCalledTimes(2)
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_VALUE", { number: 1, value: payload.value })
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_VALUE", {
+        number: 2,
+        value: convertedCurrencyValue(getters.getRates, getters.getCurrency_1, getters.getCurrency_2, getters.getValue_1)
+      })
+  })
 
   // it('getRates', async function() {
   //   const commit = jest.fn()

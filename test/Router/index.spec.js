@@ -2,7 +2,11 @@ import { resolve } from 'path'
 import { Nuxt, Builder } from 'nuxt'
 import axios from 'axios';
 jest.setTimeout(30000);
-jest.mock('axios');
+jest.mock('axios', () => {
+  return {
+    get: jest.fn(),
+  };
+});
 
 // Init Nuxt.js and create a server listening on localhost:3001
 describe('Nuxt testing', () => {
@@ -33,6 +37,7 @@ describe('Nuxt testing', () => {
   // test('Route /converter exits and render HTML', async () => {
   //   const context = {}
   //   const { html } = await nuxt.renderRoute('/converter', context)
+  //   console.log(html)
   //   expect(html.includes('text-center')).toBeTruthy()
   // })
 

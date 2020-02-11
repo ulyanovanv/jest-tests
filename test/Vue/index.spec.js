@@ -1,4 +1,5 @@
-import { mount, createLocalVue, shallowMount} from '@vue/test-utils'
+import { mount, createLocalVue, shallowMount, config, RouterLinkStub } from '@vue/test-utils'
+import VueTestUtils from '@vue/test-utils';
 import index from '@/pages/index.vue'
 import Vue from 'vue';
 import Vuex from 'vuex'
@@ -47,5 +48,16 @@ describe('index', () => {
   test('should render content correctly', () => {
     const wrapper = shallowMount(index, { store, Vue })
     expect(wrapper.vm.$el).toMatchSnapshot()
+  })
+
+  test('nuxt link should open new page /converter', () => {
+    const wrapper = shallowMount(index, { store, Vue, stubs: {
+        NuxtLink: RouterLinkStub
+      }
+    })
+
+    wrapper.find('#toConverterPage').trigger('click')
+
+    expect(wrapper.find('#toConverterPage').props().to).toBe('/converter')
   })
 })
