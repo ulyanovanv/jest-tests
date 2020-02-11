@@ -30,11 +30,11 @@ describe('Nuxt testing', () => {
   })
 
   // Example of testing only generated html
-  test('Route /converter exits and render HTML', async () => {
-    const context = {}
-    const { html } = await nuxt.renderRoute('/converter', context)
-    expect(html.includes('text-center')).toBeTruthy()
-  })
+  // test('Route /converter exits and render HTML', async () => {
+  //   const context = {}
+  //   const { html } = await nuxt.renderRoute('/converter', context)
+  //   expect(html.includes('text-center')).toBeTruthy()
+  // })
 
 // Close server and ask nuxt to stop listening to file changes
   test('Closing server and nuxt.js', () => {
