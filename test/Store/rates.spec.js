@@ -1,4 +1,4 @@
-import { state, getters, mutations, actions } from '@/store/rates.js';
+import { getters, mutations, actions } from '@/store/rates.js';
 import axios from 'axios';
 import Vue from 'vue';
 import { roundValueTwoSigns, convertedCurrencyValue } from '@/plugins/utilities.js'
@@ -176,38 +176,57 @@ describe('rates actions', () => {
       inputBox: '1',
       value: 20
     }
+    const mockCallback = jest.fn(() => {return "44.40"});
+    actions.$convertedCurrencyValue = mockCallback
+    // The first argument of the second call to the function was 1
 
     actions.changeOfValue({ commit, getters }, payload)
 
+    expect(mockCallback.mock.calls[0][3]).toBe(getters.getValue_1);
     expect(commit).toHaveBeenCalledTimes(2)
     expect(commit).toHaveBeenCalledWith(
       "SET_CHANGE_VALUE", { number: 1, value: payload.value })
+
     expect(commit).toHaveBeenCalledWith(
       "SET_CHANGE_VALUE", {
         number: 2,
-        value: convertedCurrencyValue(getters.getRates, getters.getCurrency_1, getters.getCurrency_2, getters.getValue_1)
+        value: "44.40"
       })
   })
 
-  // it('getRates', async function() {
-  //   const commit = jest.fn()
-  //
-  //   this.$axios = Vue.$axios;
-  //
-  //   await actions.getRates({ commit, state })
-  //     .then(() => {
-  //       expect(commit).toHaveBeenCalledTimes(3)
-  //       // expect(count).toBe(1)
-  //       // expect(data).toEqual({ title: 'Mock with Jest' })
-  //     })
-  //
-  //
-  //   // expect(commit).toHaveBeenCalledTimes(2)
-  //   // expect(commit).toHaveBeenCalledWith(
-  //   //   "SET_CHANGE_VALUE", { number: 1, value: 0 })
-  //   // expect(commit).toHaveBeenCalledWith(
-  //   //   "SET_CHANGE_VALUE", { number: 2, value: 0 })
-  // })
+  it('getRates', async function() {
+    const commit = jest.fn()
+
+    actions.$axios = {
+      get: () => {
+        return new Promise((resolve, reject) => {
+          resolve({
+            data: {
+              rates:{
+                'EUR': 1,
+                'USD': 1.11
+              }
+            }
+          })
+        })
+    }}
+
+    actions.$roundValueTwoSigns = () => {return 123}
+
+    await actions.getRates({ commit, state })
+      .then(() => {
+        expect(commit).toHaveBeenCalledTimes(3)
+        // expect(count).toBe(1)
+        // expect(data).toEqual({ title: 'Mock with Jest' })
+      })
+
+
+    // expect(commit).toHaveBeenCalledTimes(2)
+    // expect(commit).toHaveBeenCalledWith(
+    //   "SET_CHANGE_VALUE", { number: 1, value: 0 })
+    // expect(commit).toHaveBeenCalledWith(
+    //   "SET_CHANGE_VALUE", { number: 2, value: 0 })
+  })
 })
 
 
