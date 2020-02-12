@@ -3,13 +3,6 @@ body {
     font-family: 'Lora';
 }
 
-input[type="text"],
-select {
-    border: none;
-    outline: none;
-    width: 60px;
-}
-
 select {
     font-family: Arial, serif;
     color: #5e93e4;
@@ -67,6 +60,20 @@ select {
     font-weight: bold;
 }
 
+.input-box_dropdown {
+  font-family: Arial, serif;
+  color: #5e93e4;
+  border: none;
+  outline: none;
+  width: 60px;
+  -webkit-appearance: listbox;
+}
+
+.input-box_input {
+  border: none;
+  outline: none;
+  width: 60px;
+}
 
 .rotate {
     transform: rotate(90deg);

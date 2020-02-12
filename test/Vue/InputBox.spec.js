@@ -1,7 +1,6 @@
 import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
 import InputBox from '../../components/InputBox.vue'
-// import rates from '@/store/rates.js';
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -35,5 +34,14 @@ describe('InputBox', () => {
   // how to access store.getter method
   test('getter rates/getCurrency_1 has to return "EUR" value', () => {
     expect(getters['rates/getCurrency_1']()).toBe('EUR')
+  })
+
+  test('test computed value currentCurrency', () => {
+    const commit = jest.fn();
+    const wrapper = shallowMount(InputBox, { store, localVue })
+    wrapper.setData({ currency_1: "EUR", currency_2: "USD" });
+    wrapper.setProps({ inputbox: 1 });
+    expect(wrapper.vm.currentCurrency).toBe("EUR")
+    //how to use computed set() hier?
   })
 })

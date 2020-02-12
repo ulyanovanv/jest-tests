@@ -11,11 +11,14 @@ exports[`InputBox should render content correctly 1`] = `
   </span>
    
   <input
+    class="input-box_input"
     id="valueNum"
     type="text"
   />
    
-  <select>
+  <select
+    class="input-box_dropdown"
+  >
     <option>
       EUR
     </option>

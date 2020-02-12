@@ -198,6 +198,29 @@ describe('rates actions', () => {
       })
   })
 
+  it('changeOfValue calculates value_1 if value_2 is changed', () => {
+    const commit = jest.fn()
+    const payload = {
+      inputBox: '2',
+      value: 20
+    }
+
+    const mockCallback = jest.fn(() => {return "18.02"});
+    actions.$convertedCurrencyValue = mockCallback;
+
+    actions.changeOfValue({ commit, getters }, payload)
+
+    expect(actions.$convertedCurrencyValue.mock.calls.length).toBe(1);
+    expect(commit).toHaveBeenCalledTimes(2)
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_VALUE", { number: 2, value: payload.value })
+    expect(commit).toHaveBeenCalledWith(
+      "SET_CHANGE_VALUE", {
+        number: 1,
+        value: "18.02"
+      })
+  })
+
   it('getRates', async function() {
     const commit = jest.fn()
 

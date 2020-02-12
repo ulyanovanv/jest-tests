@@ -1,9 +1,9 @@
 <template>
   <div class="input-box">
     <span class="input-box_symbol">{{ currentCurrencySymbol() }}</span>
-    <input id="valueNum" type="text" v-model="currentValue" />
+    <input class="input-box_input" id="valueNum" type="text" v-model="currentValue" />
 
-    <select v-model="currentCurrency">
+    <select class="input-box_dropdown" v-model="currentCurrency">
       <option v-for="(el, index) in Object.keys(currencySymbol)" :key="index">{{ el }}</option>
     </select>
   </div>
