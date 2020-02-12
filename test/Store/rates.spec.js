@@ -1,11 +1,11 @@
 import { getters, mutations, actions } from '@/store/rates.js';
 import axios from 'axios';
 import Vue from 'vue';
-import { roundValueTwoSigns, convertedCurrencyValue } from '@/plugins/utilities.js'
-import { mount, createLocalVue, shallowMount, get} from '@vue/test-utils'
-Vue.use(axios);
-Vue.prototype.convertedCurrencyValue = convertedCurrencyValue;
+import Vuex from 'vuex';
 
+Vue.use(Vuex);
+Vue.use(axios);
+// Vue.prototype.convertedCurrencyValue = convertedCurrencyValue;
 jest.mock('axios');
 
 describe("rates mutations", () => {
@@ -109,18 +109,26 @@ describe('rates getters', () => {
 
 describe('rates actions', () => {
   let state;
+  let store;
 
   beforeEach(() => {
     state = {
       rates: {
-        "EUR": 2,
-        "USD": 2.22
+        "EUR": 1,
+        "USD": 1.11
       },
       currency_1: 'EUR',
       currency_2: 'USD',
       value_1: 2,
       value_2: 2.22
     }
+
+    store = new Vuex.Store({
+      state,
+      getters,
+      mutations,
+      actions
+    })
   })
 
   it('switchCurrencies reassign the currencies and values instate and calculate the new value', () => {
@@ -138,6 +146,15 @@ describe('rates actions', () => {
       "SET_CHANGE_VALUE", { number: 1, value: getters.getValue_2 })
     expect(commit).toHaveBeenCalledWith(
       "SET_CHANGE_VALUE", { number: 2, value: getters.getValue_1 })
+
+    // expect(commit).toHaveBeenCalledWith(
+    //   "SET_CHANGE_CURRENCY", { number: 1, value: 'USD' })
+    // expect(commit).toHaveBeenCalledWith(
+    //   "SET_CHANGE_CURRENCY", { number: 2, value: 'EUR' })
+    // expect(commit).toHaveBeenCalledWith(
+    //   "SET_CHANGE_VALUE", { number: 1, value: 2.22 })
+    // expect(commit).toHaveBeenCalledWith(
+    //   "SET_CHANGE_VALUE", { number: 2, value: 2 })
   })
 
   it('changeOfValue return value_2=0 if value_1=0', () => {
@@ -157,36 +174,23 @@ describe('rates actions', () => {
       "SET_CHANGE_VALUE", { number: 2, value: 0 })
   })
 
-  // TODO: how to mock injected function
   it('changeOfValue calculates value_2 if value_1 is changed', () => {
     const commit = jest.fn()
-    const mock2 = jest.fn()
-    // const mock = (currencyRates, currency1, currency2, value1) => convertedCurrencyValue(currencyRates, currency1, currency2, value1);
-    // const mock = {
-    //   get: jest.fn((url) => {
-    //     if (url === '/something') {
-    //       return Promise.resolve({
-    //         data: 'data'
-    //       });
-    //     }
-    //   }),
-    // }
-
     const payload = {
       inputBox: '1',
       value: 20
     }
+
     const mockCallback = jest.fn(() => {return "44.40"});
-    actions.$convertedCurrencyValue = mockCallback
-    // The first argument of the second call to the function was 1
+    actions.$convertedCurrencyValue = mockCallback;
 
     actions.changeOfValue({ commit, getters }, payload)
 
-    expect(mockCallback.mock.calls[0][3]).toBe(getters.getValue_1);
+    expect(actions.$convertedCurrencyValue.mock.calls.length).toBe(1);
     expect(commit).toHaveBeenCalledTimes(2)
+    expect(actions.$convertedCurrencyValue.mock.calls[0][0]).toBe(getters.getRates); //I do not like it, we compare function with function
     expect(commit).toHaveBeenCalledWith(
       "SET_CHANGE_VALUE", { number: 1, value: payload.value })
-
     expect(commit).toHaveBeenCalledWith(
       "SET_CHANGE_VALUE", {
         number: 2,
@@ -200,32 +204,35 @@ describe('rates actions', () => {
     actions.$axios = {
       get: () => {
         return new Promise((resolve, reject) => {
-          resolve({
-            data: {
-              rates:{
-                'EUR': 1,
-                'USD': 1.11
+          try {
+            resolve({
+              data: {
+                rates:{
+                  'EUR': 1,
+                  'USD': 1.11
+                }
               }
-            }
-          })
+            })
+          } catch(e) {
+            reject(e.message)
+          }
         })
     }}
 
-    actions.$roundValueTwoSigns = () => {return 123}
+    actions.$roundValueTwoSigns = (val) => {return val.toFixed(2)}
 
     await actions.getRates({ commit, state })
       .then(() => {
+        expect(actions.$axios.get()).resolves.toEqual({
+          data: {
+            rates:{
+              'EUR': 1,
+              'USD': 1.11
+            }
+          }
+        })
         expect(commit).toHaveBeenCalledTimes(3)
-        // expect(count).toBe(1)
-        // expect(data).toEqual({ title: 'Mock with Jest' })
       })
-
-
-    // expect(commit).toHaveBeenCalledTimes(2)
-    // expect(commit).toHaveBeenCalledWith(
-    //   "SET_CHANGE_VALUE", { number: 1, value: 0 })
-    // expect(commit).toHaveBeenCalledWith(
-    //   "SET_CHANGE_VALUE", { number: 2, value: 0 })
   })
 })
 
