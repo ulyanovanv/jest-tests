@@ -90,8 +90,6 @@ export const actions = {
       commit('SET_CHANGE_VALUE', { number: 2, value: 0 })
     } else if (inputBox == 1) {
       commit('SET_CHANGE_VALUE', { number: 1, value: value })
-      // console.log(this.$convertedCurrencyValue)
-      // console.log(this.$convertedCurrencyValue(getters.getRates, getters.getCurrency_1, getters.getCurrency_2, getters.getValue_1))
       commit('SET_CHANGE_VALUE', {
         number: 2,
         value: this.$convertedCurrencyValue(getters.getRates, getters.getCurrency_1, getters.getCurrency_2, getters.getValue_1)
@@ -113,20 +111,15 @@ export const actions = {
       number: inputBox,
       value: value
     })
-    console.log(typeof inputBox)
-    console.log(inputBox, value)
-    console.log(getters.getCurrency_1)
 
     if (inputBox == 1) {
       secondValue = this.$convertedCurrencyValue(getters.getRates, getters.getCurrency_1, getters.getCurrency_2, getters.getValue_1)
-      console.log(secondValue)
       commit('SET_CHANGE_VALUE', {
         number: 2,
         value: secondValue
       })
     } else if (inputBox == 2) {
       secondValue = this.$convertedCurrencyValue(getters.getRates, getters.getCurrency_2, getters.getCurrency_1, getters.getValue_2)
-      console.log(secondValue)
       commit('SET_CHANGE_VALUE', {
         number: 1,
         value: secondValue
